@@ -44,7 +44,15 @@ When I view the invitation list
 Then the status badge is green
 ```
 
-## Story #2: Guest Metrics
+## Story #2: Send Invitation
+Type: **feature**
+
+_As a party planner, I can create a new party invitation_
+
+
+
+
+## Story #3: Guest Metrics
 
 Type: **feature**
 
@@ -63,4 +71,3 @@ Then I can see how many guests were invited
 And I can see how many guests have accepted their invitation
 And I can see how many guests have declined their invitation
 ```
-
