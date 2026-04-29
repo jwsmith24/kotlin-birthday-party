@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.example.kotlinbirthdayparty.invitation.InvitationRepository
+import com.example.kotlinbirthdayparty.ui.NavGraph
 import com.example.kotlinbirthdayparty.ui.screens.MainScreen
 import com.example.kotlinbirthdayparty.ui.screens.MainScreenViewModel
 import com.example.kotlinbirthdayparty.ui.theme.KotlinBirthdayPartyTheme
@@ -17,6 +18,7 @@ class MainActivity : ComponentActivity() {
 
     // Create view models here:
     private val mainViewModel = MainScreenViewModel(invitationRepository)
+    private val newViewModel = NewInvitationViewModel(invitationRepository)
 
 
     // GUI entry point
@@ -25,9 +27,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             KotlinBirthdayPartyTheme {
-                MainScreen(
-                    cards = mainViewModel.invites,
-                    onAddInvite = mainViewModel::onAddInviteClicked
+                NavGraph(
+                    mainVM = mainViewModel,
+                    newVM = newViewModel
                 )
             }
         }
