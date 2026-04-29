@@ -6,14 +6,12 @@ import com.example.kotlinbirthdayparty.invitation.InvitationRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class MainScreenViewModel (
-    private val repo: InvitationRepository
-): ViewModel() {
-
+class MainScreenViewModel(
+    private val repo: InvitationRepository,
+) : ViewModel() {
     private val _invites = MutableStateFlow<List<Invitation>>(emptyList())
     val invites: StateFlow<List<Invitation>> = _invites
 
     fun onAddInviteClicked() {
-
     }
 }

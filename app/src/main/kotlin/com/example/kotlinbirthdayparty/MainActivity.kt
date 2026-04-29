@@ -10,14 +10,11 @@ import com.example.kotlinbirthdayparty.ui.screens.MainScreenViewModel
 import com.example.kotlinbirthdayparty.ui.theme.KotlinBirthdayPartyTheme
 
 class MainActivity : ComponentActivity() {
-
     // Support classes:
     private val invitationRepository = InvitationRepository()
 
-
     // Create view models here:
     private val mainViewModel = MainScreenViewModel(invitationRepository)
-
 
     // GUI entry point
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +24,7 @@ class MainActivity : ComponentActivity() {
             KotlinBirthdayPartyTheme {
                 MainScreen(
                     cards = mainViewModel.invites,
-                    onAddInvite = mainViewModel::onAddInviteClicked
+                    onAddInvite = mainViewModel::onAddInviteClicked,
                 )
             }
         }
