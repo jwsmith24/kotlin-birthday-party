@@ -1,6 +1,5 @@
 package com.example.kotlinbirthdayparty.ui.components
 
-import android.R.attr.contentDescription
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,57 +27,62 @@ import com.example.kotlinbirthdayparty.invitation.Invitation
 import com.example.kotlinbirthdayparty.invitation.RsvpStatus
 
 @Composable
-fun InvitationCard(cardData: Invitation, onDelete: (Int) -> Unit) {
-
-    val myColor: Color = when (cardData.rsvpStatus) {
-        RsvpStatus.Pending -> Color.Blue
-        RsvpStatus.Accepted -> Color.Green
-        RsvpStatus.Declined -> Color.Red
-    }
+fun InvitationCard(
+    cardData: Invitation,
+    onDelete: (Int) -> Unit,
+) {
+    val myColor: Color =
+        when (cardData.rsvpStatus) {
+            RsvpStatus.Pending -> Color.Blue
+            RsvpStatus.Accepted -> Color.Green
+            RsvpStatus.Declined -> Color.Red
+        }
 
     ElevatedCard(
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainer
-        ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp
-        ),
-        modifier = Modifier
-            .height(100.dp)
-            .fillMaxWidth()
-            .padding(5.dp)
-            .testTag("inviteCard" + cardData.id)
-            .semantics { contentDescription = "card" }
+        colors =
+            CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceContainer,
+            ),
+        elevation =
+            CardDefaults.cardElevation(
+                defaultElevation = 6.dp,
+            ),
+        modifier =
+            Modifier
+                .height(100.dp)
+                .fillMaxWidth()
+                .padding(5.dp)
+                .testTag("inviteCard" + cardData.id)
+                .semantics { contentDescription = "card" },
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(10.dp)
+            modifier = Modifier.padding(10.dp),
         ) {
             Icon(
                 Icons.Default.Adb,
                 contentDescription = "droidIcon",
-                modifier = Modifier.padding(horizontal = 5.dp)
+                modifier = Modifier.padding(horizontal = 5.dp),
             )
 
-            Column(
-            ) {
+            Column {
                 Text(
                     text = cardData.name,
                     fontWeight = FontWeight(500),
                     fontSize = 20.sp,
-                    modifier = Modifier.testTag("name")
+                    modifier = Modifier.testTag("name"),
                 )
                 if (cardData.hasPlusOne) {
                     Text(
                         text = "Plus one",
-                        modifier = Modifier.testTag("plusOne")
+                        modifier = Modifier.testTag("plusOne"),
                     )
                 }
 
                 Text(
                     text = ("Status: " + cardData.rsvpStatus::class.simpleName) ?: "",
                     color = myColor,
-                    modifier = Modifier.testTag("rsvpStatus")
+                    modifier = Modifier.testTag("rsvpStatus"),
                 )
             }
         }
@@ -88,18 +92,16 @@ fun InvitationCard(cardData: Invitation, onDelete: (Int) -> Unit) {
 @Composable
 @Preview(showBackground = true)
 fun InvitationCardPendingPreview() {
-
     Column(
-        modifier = Modifier.padding(10.dp)
+        modifier = Modifier.padding(10.dp),
     ) {
-
         InvitationCard(
             Invitation(
                 0,
                 name = "Jake Smith",
                 hasPlusOne = true,
                 rsvpStatus = RsvpStatus.Pending,
-            )
+            ),
         ) { }
 
         InvitationCard(
@@ -108,7 +110,7 @@ fun InvitationCardPendingPreview() {
                 name = "Curt Arbtin",
                 hasPlusOne = true,
                 rsvpStatus = RsvpStatus.Accepted,
-            )
+            ),
         ) { }
 
         InvitationCard(
@@ -117,7 +119,7 @@ fun InvitationCardPendingPreview() {
                 name = "Rob Payne",
                 hasPlusOne = false,
                 rsvpStatus = RsvpStatus.Declined,
-            )
+            ),
         ) { }
     }
 }

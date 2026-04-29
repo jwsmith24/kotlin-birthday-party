@@ -7,23 +7,21 @@ import kotlinx.coroutines.flow.update
 class InvitationRepository {
     private val _sentInvitations = MutableStateFlow<List<Invitation>>(emptyList())
     val sentInvitations: StateFlow<List<Invitation>> = _sentInvitations
-    private var idCounter = 0;
+    private var idCounter = 0
 
     fun upsert(invitation: Invitation) {
         _sentInvitations.update { currentList ->
-            if (currentList.any {it.id == invitation.id}) {
+            if (currentList.any { it.id == invitation.id }) {
                 currentList.map { if (it.id == invitation.id) invitation else it }
             } else {
                 currentList + invitation.copy(id = idCounter++)
             }
         }
-
     }
 
     fun remove(targetId: Int) {
         _sentInvitations.update { currentList ->
             currentList.filter { it.id != targetId }
-
         }
     }
 }

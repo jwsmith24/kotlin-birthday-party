@@ -40,54 +40,49 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 fun MainScreen(
     cards: StateFlow<List<Invitation>>,
-    onAddInvite: () -> Unit
+    onAddInvite: () -> Unit,
 ) {
-
     val myCards = cards.collectAsState()
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                modifier = Modifier.testTag("mainHeader"),
-                title = {
-                    Row() {
-                        Icon(
-                            imageVector = Icons.Default.AutoAwesome,
-                            contentDescription = "awesomeIcon"
-                        )
-                        Spacer(
-                            modifier = Modifier.width(10.dp)
-                        )
-                        Text(
-                            fontWeight = FontWeight(900),
-                            text = "nVITE"
-                        )
-                    }
-                },
-                colors = topAppBarColors(
+    Scaffold(topBar = {
+        TopAppBar(
+            modifier = Modifier.testTag("mainHeader"),
+            title = {
+                Row {
+                    Icon(
+                        imageVector = Icons.Default.AutoAwesome,
+                        contentDescription = "awesomeIcon",
+                    )
+                    Spacer(
+                        modifier = Modifier.width(10.dp),
+                    )
+                    Text(
+                        fontWeight = FontWeight(900),
+                        text = "nVITE",
+                    )
+                }
+            },
+            colors =
+                topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary
-                )
+                    titleContentColor = MaterialTheme.colorScheme.primary,
+                ),
+        )
+    }, floatingActionButton = {
+        FloatingActionButton(
+            onClick = onAddInvite,
+            modifier = Modifier.testTag("addInviteButton"),
+        ) {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = "addInviteIcon",
             )
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = onAddInvite,
-                modifier = Modifier.testTag("addInviteButton")
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "addInviteIcon",
-                )
-            }
         }
-    ) { innerPadding ->
+    }) { innerPadding ->
 
         if (myCards.value.size > 0) {
             LazyColumn(
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .testTag("cardContainer")
+                modifier = Modifier.padding(innerPadding).testTag("cardContainer"),
             ) {
                 items(myCards.value) { card ->
                     InvitationCard(card) { }
@@ -95,15 +90,13 @@ fun MainScreen(
             }
         } else {
             Box(
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
+                modifier = Modifier.padding(innerPadding).fillMaxSize(),
+                contentAlignment = Alignment.Center,
             ) {
                 Icon(
                     imageVector = Icons.Default.Block,
                     contentDescription = "noCardsIcon",
-                    modifier = Modifier.size(50.dp)
+                    modifier = Modifier.size(50.dp),
                 )
             }
         }
@@ -113,28 +106,28 @@ fun MainScreen(
 @Composable
 @Preview(showBackground = true)
 fun MainScreenPreview() {
-
-    val previewCards = MutableStateFlow(
-        listOf(
-            Invitation(
-                name = "Jake Smith",
-                hasPlusOne = true,
-                rsvpStatus = RsvpStatus.Pending
+    val previewCards =
+        MutableStateFlow(
+            listOf(
+                Invitation(
+                    name = "Jake Smith",
+                    hasPlusOne = true,
+                    rsvpStatus = RsvpStatus.Pending,
+                ),
+                Invitation(
+                    name = "Curt Arbtin",
+                    hasPlusOne = true,
+                    rsvpStatus = RsvpStatus.Accepted,
+                ),
+                Invitation(
+                    name = "Rob Payne",
+                    hasPlusOne = false,
+                    rsvpStatus = RsvpStatus.Declined,
+                ),
             ),
-            Invitation(
-                name = "Curt Arbtin",
-                hasPlusOne = true,
-                rsvpStatus = RsvpStatus.Accepted
-            ),
-            Invitation(
-                name = "Rob Payne",
-                hasPlusOne = false,
-                rsvpStatus = RsvpStatus.Declined
-            )
         )
-    )
 
-    KotlinBirthdayPartyTheme() {
+    KotlinBirthdayPartyTheme {
         MainScreen(previewCards) { }
     }
 }
@@ -142,7 +135,7 @@ fun MainScreenPreview() {
 @Composable
 @Preview(showBackground = true)
 fun MainScreenEmptyPreview() {
-    KotlinBirthdayPartyTheme() {
+    KotlinBirthdayPartyTheme {
         MainScreen(MutableStateFlow(emptyList())) { }
     }
 }
