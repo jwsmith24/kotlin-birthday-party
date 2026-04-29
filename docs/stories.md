@@ -49,7 +49,38 @@ Type: **feature**
 
 _As a party planner, I can create a new party invitation_
 
+### Design
 
+### Acceptance Criteria
+
+```gherkin
+Scenario: Navigate to invitation form
+
+Given I am on the main screen
+When I tap the create invitation button
+Then I navigate to the invitation form
+```
+
+```gherkin
+Scenario: Send invitation
+
+Given I am on the invitation form screen
+When I enter valid data
+And I tap the send invitation button
+Then I get a confirmation toast
+And I navigate to the main screen
+```
+
+```gherkin
+Scenario: Enter invalid data
+
+Given I am missing required fields
+Or I have entered invalid data
+When I tap the send invitation button
+Then I get an error toast 
+And the invalid fields show an error message
+And my invitation is not sent
+```
 
 
 ## Story #3: Guest Metrics
