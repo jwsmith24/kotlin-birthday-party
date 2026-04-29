@@ -1,5 +1,6 @@
 package com.example.kotlinbirthdayparty.ui.components
 
+import android.R.attr.contentDescription
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,26 +14,23 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kotlinbirthdayparty.invitation.Invitation
 import com.example.kotlinbirthdayparty.invitation.RsvpStatus
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-fun InvitationCard(cardData: StateFlow<Invitation>, onDelete: (Int) -> Unit) {
+fun InvitationCard(cardData: Invitation, onDelete: (Int) -> Unit) {
 
-    val invitationData = cardData.collectAsState()
-
-    val myColor: Color = when(invitationData.value.rsvpStatus) {
+    val myColor: Color = when (cardData.rsvpStatus) {
         RsvpStatus.Pending -> Color.Blue
         RsvpStatus.Accepted -> Color.Green
         RsvpStatus.Declined -> Color.Red
@@ -49,7 +47,8 @@ fun InvitationCard(cardData: StateFlow<Invitation>, onDelete: (Int) -> Unit) {
             .height(100.dp)
             .fillMaxWidth()
             .padding(5.dp)
-            .testTag("inviteCard" + invitationData.value.id)
+            .testTag("inviteCard" + cardData.id)
+            .semantics { contentDescription = "card" }
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -64,20 +63,20 @@ fun InvitationCard(cardData: StateFlow<Invitation>, onDelete: (Int) -> Unit) {
             Column(
             ) {
                 Text(
-                    text = invitationData.value.name,
+                    text = cardData.name,
                     fontWeight = FontWeight(500),
                     fontSize = 20.sp,
                     modifier = Modifier.testTag("name")
                 )
-                if (invitationData.value.hasPlusOne) {
+                if (cardData.hasPlusOne) {
                     Text(
                         text = "Plus one",
                         modifier = Modifier.testTag("plusOne")
-                        )
+                    )
                 }
 
                 Text(
-                    text = ("Status: " + invitationData.value.rsvpStatus::class.simpleName) ?: "",
+                    text = ("Status: " + cardData.rsvpStatus::class.simpleName) ?: "",
                     color = myColor,
                     modifier = Modifier.testTag("rsvpStatus")
                 )
@@ -95,35 +94,29 @@ fun InvitationCardPendingPreview() {
     ) {
 
         InvitationCard(
-            MutableStateFlow(
-                Invitation(
-                    0,
-                    name = "Jake Smith",
-                    hasPlusOne = true,
-                    rsvpStatus = RsvpStatus.Pending,
-                )
+            Invitation(
+                0,
+                name = "Jake Smith",
+                hasPlusOne = true,
+                rsvpStatus = RsvpStatus.Pending,
             )
         ) { }
 
         InvitationCard(
-            MutableStateFlow(
-                Invitation(
-                    0,
-                    name = "Curt Arbtin",
-                    hasPlusOne = true,
-                    rsvpStatus = RsvpStatus.Accepted,
-                )
+            Invitation(
+                0,
+                name = "Curt Arbtin",
+                hasPlusOne = true,
+                rsvpStatus = RsvpStatus.Accepted,
             )
         ) { }
 
         InvitationCard(
-            MutableStateFlow(
-                Invitation(
-                    0,
-                    name = "Rob Payne",
-                    hasPlusOne = true,
-                    rsvpStatus = RsvpStatus.Declined,
-                )
+            Invitation(
+                0,
+                name = "Rob Payne",
+                hasPlusOne = false,
+                rsvpStatus = RsvpStatus.Declined,
             )
         ) { }
     }

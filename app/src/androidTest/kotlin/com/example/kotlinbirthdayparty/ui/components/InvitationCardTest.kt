@@ -26,7 +26,7 @@ class InvitationCardTest {
     @Test
     fun whenCardLoads_thenShowCorrectComponents() {
         composeTestRule.setContent {
-            InvitationCard(MutableStateFlow(testCardData)) {}
+            InvitationCard(testCardData) {}
         }
 
         composeTestRule.onNodeWithTag("name")
