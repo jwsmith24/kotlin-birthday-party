@@ -1,4 +1,4 @@
-# Kotlin Birthday Party
+# Kotlin Birthday Party 🥳
 
 The goal of this project is to provide an introduction to Kotlin, Android, and Jetpack Compose fundamentals to prepare
 for an intro to ATAK plugin development later in the week.
