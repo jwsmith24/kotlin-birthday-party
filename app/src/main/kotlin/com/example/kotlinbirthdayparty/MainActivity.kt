@@ -14,34 +14,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.kotlinbirthdayparty.ui.theme.KotlinBirthdayPartyTheme
 
 class MainActivity : ComponentActivity() {
+
+    private val mainViewModel = MainViewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             KotlinBirthdayPartyTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                MainScreen()
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hi $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    KotlinBirthdayPartyTheme {
-        Greeting(name = "Android")
     }
 }
