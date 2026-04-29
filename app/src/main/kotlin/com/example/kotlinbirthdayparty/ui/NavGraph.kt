@@ -6,11 +6,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.kotlinbirthdayparty.ui.screens.MainScreen
 import com.example.kotlinbirthdayparty.ui.screens.MainScreenViewModel
+import com.example.kotlinbirthdayparty.ui.screens.NewInviteScreen
+import com.example.kotlinbirthdayparty.ui.screens.NewInviteViewModel
 
 @Composable
 fun NavGraph(
     mainVM: MainScreenViewModel,
-    newVM: NewInvitationViewModel
+    newVM: NewInviteViewModel
 ) {
 
     val navController = rememberNavController()
@@ -40,7 +42,8 @@ fun NavGraph(
 
         composable(Screen.New.route) {
             NewInviteScreen(
-
+                onSubmit = newVM::onSubmit,
+                onBackButtonClicked = { navController.popBackStack() }
             )
         }
     }

@@ -1,5 +1,6 @@
 package com.example.kotlinbirthdayparty.ui.screens
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -50,7 +51,9 @@ fun MainScreen(
             TopAppBar(
                 modifier = Modifier.testTag("mainHeader"),
                 title = {
-                    Row() {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Icon(
                             imageVector = Icons.Default.AutoAwesome,
                             contentDescription = "awesomeIcon"
