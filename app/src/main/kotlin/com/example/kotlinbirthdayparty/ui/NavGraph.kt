@@ -49,9 +49,10 @@ fun NavGraph(
             InvitationFormScreen(
                 name = invitation.name,
                 hasPlusOne = invitation.hasPlusOne,
-                onSubmit = invitationViewModel::onSubmit,
+                onConfirm = { invitationViewModel.onSubmit() },
+                nameHasErrors = invitationViewModel.nameHasErrors,
                 onBackButtonClicked = { navController.popBackStack() },
-                onNameFieldChanged =invitationViewModel::handleNameFieldChange,
+                onNameFieldChanged = invitationViewModel::handleNameFieldChange,
                 onPlusOneChanged = invitationViewModel::handlePlusOneChange
             )
         }

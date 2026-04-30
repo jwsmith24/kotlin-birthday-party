@@ -1,5 +1,7 @@
 package com.example.kotlinbirthdayparty.ui.screens
 
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import com.example.kotlinbirthdayparty.invitation.Invitation
 import com.example.kotlinbirthdayparty.invitation.InvitationRepository
 import com.example.kotlinbirthdayparty.invitation.RsvpStatus
@@ -22,6 +24,10 @@ class InvitationFormViewModel(
 
     val invitation: StateFlow<Invitation> = _invitationFormData
 
+    private val _nameHasErrors = MutableStateFlow(false)
+
+    val nameHasErrors: StateFlow<Boolean> = _nameHasErrors
+
     fun handleNameFieldChange(name: String) {
         _invitationFormData.update { it.copy(name = name) }
     }
@@ -30,19 +36,15 @@ class InvitationFormViewModel(
         _invitationFormData.update { it.copy(hasPlusOne = hasPlusOne) }
     }
 
-    private fun isFormValid(): Boolean {
-        val formData = _invitationFormData.value
-
-        return formData.name.isNotBlank()
-    }
-
     fun onSubmit(): Boolean {
-        if (isFormValid()) {
+        if (_invitationFormData.value.name.isNotBlank()) {
             repo.upsert(invitation.value)
-            return true
-        }
 
-        return false
+            return true
+        } else {
+            _nameHasErrors.update { true }
+            return false
+        }
     }
 
     override fun onLoad() {

@@ -1,6 +1,5 @@
 package com.example.kotlinbirthdayparty.ui.screens
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -85,7 +84,7 @@ fun MainScreen(
         }
     ) { innerPadding ->
 
-        if (myCards.value.size > 0) {
+        if (myCards.value.isNotEmpty()) {
             LazyColumn(
                 modifier = Modifier
                     .padding(innerPadding)

@@ -6,12 +6,15 @@ import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material3.*
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -21,20 +24,31 @@ fun InvitationFormScreen(
     hasPlusOne: Boolean,
     onNameFieldChanged: (String) -> Unit,
     onPlusOneChanged: (Boolean) -> Unit,
-    onSubmit: () -> Boolean,
+    nameHasErrors: StateFlow<Boolean>,
+    onConfirm: () -> Boolean,
     onBackButtonClicked: () -> Unit
 ) {
-    // todo: wire up form data
+    val error = nameHasErrors.collectAsState()
+
     Scaffold(
         topBar = {
             TopAppBar(
-                modifier = Modifier.testTag("newHeader"),
+                modifier = Modifier.testTag("formHeader"),
+                colors = topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.primary
+                ),
                 title = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        OutlinedButton(
-                            onClick = onBackButtonClicked
+                        ElevatedButton(
+                            onClick = onBackButtonClicked,
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.inversePrimary,
+                                contentColor = MaterialTheme.colorScheme.onSurface
+                            ),
+                            modifier = Modifier.testTag("backButton")
                         ) {
                             Icon(
                                 imageVector = Icons.Default.ArrowBackIosNew,
@@ -50,32 +64,53 @@ fun InvitationFormScreen(
                         )
                     }
                 },
-                colors = topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary
-                )
             )
         },
+        bottomBar = {
+            BottomAppBar(
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+            ) {
+                OutlinedButton(
+                    onClick = {
+                        val result = onConfirm.invoke()
+                        if (result) onBackButtonClicked() },
+                    modifier = Modifier.testTag("confirmButton")
+                ) {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = "Confirm"
+                    )
+                }
+            }
+        }
     ) { innerPadding ->
         Column(
             modifier = Modifier.padding(innerPadding)
         ) {
             OutlinedTextField(
-                value = "",
+                value = name,
                 label = { Text(text = "name") },
-                isError = false,
+                isError = error.value,
                 onValueChange = onNameFieldChanged,
+                supportingText = {
+                    if (error.value) {
+                        Text("Please fill out name correctly")
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp),
+                    .padding(10.dp)
+                    .testTag("inputName"),
             )
 
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Checkbox(
-                    checked = false,
+                    checked = hasPlusOne,
                     onCheckedChange = onPlusOneChanged,
+                    modifier = Modifier.testTag("checkboxPlusOne")
                 )
                 Text("Bringing plus one")
             }
@@ -91,7 +126,8 @@ fun NewInviteScreenPreview() {
         hasPlusOne = true,
         onNameFieldChanged = { },
         onPlusOneChanged = { },
-        onSubmit = { false },
+        nameHasErrors = MutableStateFlow(true),
+        onConfirm = { false },
         onBackButtonClicked = {}
     )
 }
