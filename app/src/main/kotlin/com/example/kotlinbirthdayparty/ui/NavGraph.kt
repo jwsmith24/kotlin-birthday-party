@@ -19,7 +19,7 @@ fun NavGraph(
 
     val navController = rememberNavController()
 
-    // will need when ATAK prevents using normal android viewModel lifecycle
+    // Will need when ATAK prevents using normal android viewModel lifecycle
     navController.addOnDestinationChangedListener { _, destination, _ ->
         when (destination.route) {
             Screen.Main.route -> {
@@ -39,6 +39,8 @@ fun NavGraph(
         composable(Screen.Main.route) {
             MainScreen(
                 cards = mainViewModel.invites,
+                onToggle = mainViewModel::onToggle,
+                onDelete = mainViewModel::onDelete,
                 onAddInvite = { navController.navigate(Screen.InvitationForm.route) }
             )
         }

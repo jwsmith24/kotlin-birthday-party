@@ -57,4 +57,13 @@ class InvitationRepositoryTest {
         invitationRepo.remove(targetId)
         assertEquals(4, invitationRepo.sentInvitations.value.size)
     }
+
+    @Test
+    fun whenToggleCalled_ToggleStatus() {
+        invitationRepo.upsert(testInvitation)
+        assertEquals(4, invitationRepo.sentInvitations.value.size)
+
+        invitationRepo.toggle(3)
+        assertEquals(RsvpStatus.Accepted, invitationRepo.sentInvitations.value.last().rsvpStatus)
+    }
 }

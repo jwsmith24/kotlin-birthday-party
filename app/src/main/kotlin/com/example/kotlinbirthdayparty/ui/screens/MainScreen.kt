@@ -41,6 +41,8 @@ import kotlinx.coroutines.flow.StateFlow
 fun MainScreen(
     cards: StateFlow<List<Invitation>>,
     onAddInvite: () -> Unit,
+    onToggle: (Int) -> Unit,
+    onDelete: (Int) -> Unit,
 ) {
     val myCards = cards.collectAsState()
 
@@ -91,7 +93,11 @@ fun MainScreen(
                     .testTag("cardContainer")
             ) {
                 items(myCards.value) { card ->
-                    InvitationCard(card) { }
+                    InvitationCard(
+                        card,
+                        onToggle = { onToggle(card.id!!) },
+                        onDelete = { onDelete(card.id!!) }
+                    )
                 }
             }
         } else {
@@ -136,7 +142,11 @@ fun MainScreenPreview() {
     )
 
     KotlinBirthdayPartyTheme{
-        MainScreen(previewCards) { }
+        MainScreen(
+            previewCards,
+            onAddInvite = {},
+            onToggle = {},
+        ) { }
     }
 }
 
@@ -144,6 +154,10 @@ fun MainScreenPreview() {
 @Preview(showBackground = true)
 fun MainScreenEmptyPreview() {
     KotlinBirthdayPartyTheme {
-        MainScreen(MutableStateFlow(emptyList())) { }
+        MainScreen(
+            MutableStateFlow(emptyList()),
+            {},
+            {}
+        ) { }
     }
 }

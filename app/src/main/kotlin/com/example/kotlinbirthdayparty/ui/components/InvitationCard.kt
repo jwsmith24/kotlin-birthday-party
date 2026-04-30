@@ -29,7 +29,8 @@ import com.example.kotlinbirthdayparty.invitation.RsvpStatus
 @Composable
 fun InvitationCard(
     cardData: Invitation,
-    onDelete: (Int) -> Unit,
+    onToggle: () -> Unit,
+    onDelete: () -> Unit,
 ) {
     val myColor: Color =
         when (cardData.rsvpStatus) {
@@ -54,6 +55,7 @@ fun InvitationCard(
                 .padding(5.dp)
                 .testTag("inviteCard" + cardData.id)
                 .semantics { contentDescription = "card" },
+        onClick = { onToggle() }
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -101,7 +103,7 @@ fun InvitationCardPendingPreview() {
                 name = "Jacob Varner",
                 hasPlusOne = true,
                 rsvpStatus = RsvpStatus.Pending,
-            ),
+            ), {}
         ) { }
 
         InvitationCard(
@@ -110,7 +112,7 @@ fun InvitationCardPendingPreview() {
                 name = "Curt Arbtin",
                 hasPlusOne = true,
                 rsvpStatus = RsvpStatus.Accepted,
-            ),
+            ), {}
         ) { }
 
         InvitationCard(
@@ -119,7 +121,7 @@ fun InvitationCardPendingPreview() {
                 name = "Rob Payne",
                 hasPlusOne = false,
                 rsvpStatus = RsvpStatus.Declined,
-            ),
+            ), {}
         ) { }
     }
 }

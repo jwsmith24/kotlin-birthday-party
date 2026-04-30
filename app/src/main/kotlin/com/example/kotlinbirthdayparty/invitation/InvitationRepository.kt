@@ -45,4 +45,25 @@ class InvitationRepository {
             currentList.filter { it.id != targetId }
         }
     }
+
+    fun toggle(targetId: Int) {
+        _sentInvitations.update { currentList ->
+            if (currentList.any { it.id == targetId }) {
+                currentList.map {
+                    if (it.id == targetId) it.copy(
+                        rsvpStatus =
+                            getNextRSVPStatus(it.rsvpStatus)
+                    ) else it
+                }
+            } else {
+                currentList
+            }
+        }
+    }
+
+    fun getNextRSVPStatus(oldStatus: RsvpStatus): RsvpStatus = when (oldStatus) {
+        RsvpStatus.Accepted -> RsvpStatus.Declined
+        RsvpStatus.Pending -> RsvpStatus.Accepted
+        RsvpStatus.Declined -> RsvpStatus.Pending
+    }
 }
