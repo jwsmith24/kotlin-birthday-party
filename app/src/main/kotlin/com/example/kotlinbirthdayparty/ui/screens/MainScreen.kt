@@ -41,9 +41,8 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 fun MainScreen(
     cards: StateFlow<List<Invitation>>,
-    onAddInvite: () -> Unit
+    onAddInvite: () -> Unit,
 ) {
-
     val myCards = cards.collectAsState()
 
     Scaffold(
@@ -137,7 +136,7 @@ fun MainScreenPreview() {
         )
     )
 
-    KotlinBirthdayPartyTheme() {
+    KotlinBirthdayPartyTheme{
         MainScreen(previewCards) { }
     }
 }
@@ -145,7 +144,7 @@ fun MainScreenPreview() {
 @Composable
 @Preview(showBackground = true)
 fun MainScreenEmptyPreview() {
-    KotlinBirthdayPartyTheme() {
+    KotlinBirthdayPartyTheme {
         MainScreen(MutableStateFlow(emptyList())) { }
     }
 }

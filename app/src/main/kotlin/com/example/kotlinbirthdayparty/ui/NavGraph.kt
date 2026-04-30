@@ -1,29 +1,32 @@
 package com.example.kotlinbirthdayparty.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.kotlinbirthdayparty.ui.screens.MainScreen
 import com.example.kotlinbirthdayparty.ui.screens.MainScreenViewModel
-import com.example.kotlinbirthdayparty.ui.screens.NewInviteScreen
-import com.example.kotlinbirthdayparty.ui.screens.NewInviteViewModel
+import com.example.kotlinbirthdayparty.ui.screens.InvitationFormScreen
+import com.example.kotlinbirthdayparty.ui.screens.InvitationFormViewModel
 
 @Composable
 fun NavGraph(
-    mainVM: MainScreenViewModel,
-    newVM: NewInviteViewModel
+    mainViewModel: MainScreenViewModel,
+    invitationViewModel: InvitationFormViewModel
 ) {
 
     val navController = rememberNavController()
 
+    // will need when ATAK prevents using normal android viewModel lifecycle
     navController.addOnDestinationChangedListener { _, destination, _ ->
-        when(destination) {
-            Screen.Main -> {
+        when (destination.route) {
+            Screen.Main.route -> {
                 // VM lifecycle stuff
             }
 
-            Screen.New -> {
+            Screen.New.route -> {
                 // VM lifecycle stuff
             }
         }
@@ -35,21 +38,25 @@ fun NavGraph(
     ) {
         composable(Screen.Main.route) {
             MainScreen(
-                cards = mainVM.invites,
+                cards = mainViewModel.invites,
                 onAddInvite = { navController.navigate(Screen.New.route) }
             )
         }
 
         composable(Screen.New.route) {
-            NewInviteScreen(
-                onSubmit = newVM::onSubmit,
-                onBackButtonClicked = { navController.popBackStack() }
+            val invitation by invitationViewModel.invitation.collectAsState()
+            InvitationFormScreen(
+                invitationData = invitation,
+                onSubmit = invitationViewModel::onSubmit,
+                onBackButtonClicked = { navController.popBackStack() },
+                onNameFieldChanged =invitationViewModel::handleNameFieldChange,
+                onPlusOneChanged = invitationViewModel::handlePlusOneChange
             )
         }
     }
 }
 
 sealed class Screen(val route: String) {
-    object Main: Screen("main")
-    object New: Screen("new")
+    object Main : Screen("main")
+    object New : Screen("new")
 }
