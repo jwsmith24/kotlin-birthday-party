@@ -4,15 +4,26 @@
 
 Type: **feature**
 
-_As a party planner, I can see all the invites that I've sent out and their status so that I can easily track who will be coming to my party._
+_As a party planner, I can see all the invites that I've sent out and their status so that I can easily track who will
+be coming to my party._
 
 ### Design
+
 ![Mission Queue Mockup]()
 
 ### Acceptance Criteria
 
 ```gherkin
-Scenario: Display invitations
+Scenario: View an invitation
+
+Given at least one invitation has been sent
+When I view an invitation
+Then I see the name, RSVP status, and address of who I sent it to
+And I see if they'll have a plus one or not
+```
+
+```gherkin
+Scenario: Display list of invitations
 
 Given at least one invitation has been sent
 When I open the application
@@ -29,22 +40,21 @@ Then I see the message "No invitations sent"
 ```
 
 ```gherkin
-Scenario: RSVP status badge colors
+Scenario Outline: RSVP status badge colors
 
-Given an inviation has RSVP status "Pending"
+Given an invitation has RSVP status "<status>"
 When I view the invitation list
-Then the status badge is blue
+Then the status badge is <color>
 
-Given an inviation has RSVP status "Declined"
-When I view the invitation list
-Then the status badge is red
-
-Given an inviation has RSVP status "Attending"
-When I view the invitation list
-Then the status badge is green
+Examples:
+| status    | color  |
+| Pending   | yellow |
+| Declined  | red    |
+| Attending | green  |
 ```
 
 ## Story #2: Send Invitation
+
 Type: **feature**
 
 _As a party planner, I can create a new party invitation_
@@ -74,20 +84,19 @@ And I navigate to the main screen
 ```gherkin
 Scenario: Enter invalid data
 
-Given I am missing required fields
-Or I have entered invalid data
+Given I am missing required fields or I have entered invalid data
 When I tap the send invitation button
-Then I get an error toast 
+Then I get an error toast
 And the invalid fields show an error message
 And my invitation is not sent
 ```
-
 
 ## Story #3: Guest Metrics
 
 Type: **feature**
 
-_As a party planner, I can see stats on how many guests were invited, confirmed, and denied so that I can adjust my headcount for food and party favors_
+_As a party planner, I can see stats on how many guests were invited, confirmed, and denied so that I can adjust my
+headcount for food and party favors_
 
 ### Design
 
