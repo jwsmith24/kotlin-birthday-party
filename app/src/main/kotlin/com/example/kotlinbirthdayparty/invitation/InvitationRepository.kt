@@ -5,19 +5,22 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
 class InvitationRepository {
-    private val _sentInvitations = MutableStateFlow<List<Invitation>>(
+    private val _sentInvitations = MutableStateFlow(
         listOf(
             Invitation(
+                id = 0,
                 name = "Jacob Varner",
                 hasPlusOne = true,
                 rsvpStatus = RsvpStatus.Pending
             ),
             Invitation(
+                id = 1,
                 name = "Curt Arbtin",
                 hasPlusOne = true,
                 rsvpStatus = RsvpStatus.Accepted
             ),
             Invitation(
+                id = 2,
                 name = "Rob Payne",
                 hasPlusOne = false,
                 rsvpStatus = RsvpStatus.Declined
@@ -25,7 +28,7 @@ class InvitationRepository {
         )
     )
     val sentInvitations: StateFlow<List<Invitation>> = _sentInvitations
-    private var idCounter = 0
+    private var idCounter = 3
 
     fun upsert(invitation: Invitation) {
         _sentInvitations.update { currentList ->

@@ -13,7 +13,6 @@ class InvitationFormViewModel(
     private val repo: InvitationRepository
 ): ViewModel {
 
-    // Later on we can build update functionality too
     private val _invitationFormData = MutableStateFlow(
         Invitation(
             name = "",

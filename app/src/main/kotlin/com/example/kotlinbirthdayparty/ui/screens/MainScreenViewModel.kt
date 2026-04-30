@@ -9,8 +9,6 @@ class MainScreenViewModel(
 ): ViewModel {
     val invites: StateFlow<List<Invitation>> = repo.sentInvitations
 
-    fun onAddInviteClicked() {
-    }
 
     override fun onLoad() {
         // do things

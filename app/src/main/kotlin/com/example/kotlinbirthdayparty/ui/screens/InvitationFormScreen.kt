@@ -11,8 +11,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.kotlinbirthdayparty.ui.theme.KotlinBirthdayPartyTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -75,10 +77,14 @@ fun InvitationFormScreen(
                     onClick = {
                         val result = onConfirm.invoke()
                         if (result) onBackButtonClicked() },
-                    modifier = Modifier.testTag("confirmButton")
+                    modifier = Modifier
+                        .testTag("confirmButton")
+                        .padding(horizontal = 30.dp),
+                    colors = ButtonDefaults.buttonColors()
                 ) {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
                         text = "Confirm"
                     )
                 }
@@ -121,13 +127,15 @@ fun InvitationFormScreen(
 @Composable
 @Preview(showBackground = true)
 fun NewInviteScreenPreview() {
-    InvitationFormScreen(
-        name = "bob",
-        hasPlusOne = true,
-        onNameFieldChanged = { },
-        onPlusOneChanged = { },
-        nameHasErrors = MutableStateFlow(true),
-        onConfirm = { false },
-        onBackButtonClicked = {}
-    )
+    KotlinBirthdayPartyTheme {
+        InvitationFormScreen(
+            name = "bob",
+            hasPlusOne = true,
+            onNameFieldChanged = { },
+            onPlusOneChanged = { },
+            nameHasErrors = MutableStateFlow(true),
+            onConfirm = { false },
+            onBackButtonClicked = {}
+        )
+    }
 }

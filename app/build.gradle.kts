@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
     testImplementation(libs.junit)
+    testImplementation("io.mockk:mockk:1.14.9")
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
