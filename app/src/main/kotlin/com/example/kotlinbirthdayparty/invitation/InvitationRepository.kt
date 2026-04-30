@@ -8,7 +8,7 @@ class InvitationRepository {
     private val _sentInvitations = MutableStateFlow<List<Invitation>>(
         listOf(
             Invitation(
-                name = "Jake Smith",
+                name = "Jacob Varner",
                 hasPlusOne = true,
                 rsvpStatus = RsvpStatus.Pending
             ),

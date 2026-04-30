@@ -26,7 +26,7 @@ fun NavGraph(
                 // VM lifecycle stuff
             }
 
-            Screen.New.route -> {
+            Screen.InvitationForm.route -> {
                 // VM lifecycle stuff
             }
         }
@@ -39,14 +39,16 @@ fun NavGraph(
         composable(Screen.Main.route) {
             MainScreen(
                 cards = mainViewModel.invites,
-                onAddInvite = { navController.navigate(Screen.New.route) }
+                onAddInvite = { navController.navigate(Screen.InvitationForm.route) }
             )
         }
 
-        composable(Screen.New.route) {
+        composable(Screen.InvitationForm.route) {
             val invitation by invitationViewModel.invitation.collectAsState()
+
             InvitationFormScreen(
-                invitationData = invitation,
+                name = invitation.name,
+                hasPlusOne = invitation.hasPlusOne,
                 onSubmit = invitationViewModel::onSubmit,
                 onBackButtonClicked = { navController.popBackStack() },
                 onNameFieldChanged =invitationViewModel::handleNameFieldChange,
@@ -58,5 +60,5 @@ fun NavGraph(
 
 sealed class Screen(val route: String) {
     object Main : Screen("main")
-    object New : Screen("new")
+    object InvitationForm : Screen("invitationForm")
 }

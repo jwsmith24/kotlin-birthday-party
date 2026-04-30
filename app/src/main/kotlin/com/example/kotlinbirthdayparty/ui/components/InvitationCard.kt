@@ -33,7 +33,7 @@ fun InvitationCard(
 ) {
     val myColor: Color =
         when (cardData.rsvpStatus) {
-            RsvpStatus.Pending -> Color.Blue
+            RsvpStatus.Pending -> Color.Yellow
             RsvpStatus.Accepted -> Color.Green
             RsvpStatus.Declined -> Color.Red
         }
@@ -98,7 +98,7 @@ fun InvitationCardPendingPreview() {
         InvitationCard(
             Invitation(
                 0,
-                name = "Jake Smith",
+                name = "Jacob Varner",
                 hasPlusOne = true,
                 rsvpStatus = RsvpStatus.Pending,
             ),

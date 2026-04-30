@@ -12,13 +12,13 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.kotlinbirthdayparty.invitation.Invitation
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InvitationFormScreen(
-    invitationData: Invitation,
+    name: String,
+    hasPlusOne: Boolean,
     onNameFieldChanged: (String) -> Unit,
     onPlusOneChanged: (Boolean) -> Unit,
     onSubmit: () -> Boolean,
@@ -87,11 +87,11 @@ fun InvitationFormScreen(
 @Preview(showBackground = true)
 fun NewInviteScreenPreview() {
     InvitationFormScreen(
-        invitationData = Invitation(
-            name = "Bob"
-        ),
+        name = "bob",
+        hasPlusOne = true,
         onNameFieldChanged = { },
         onPlusOneChanged = { },
-        onSubmit = { false }
-    ) {}
+        onSubmit = { false },
+        onBackButtonClicked = {}
+    )
 }

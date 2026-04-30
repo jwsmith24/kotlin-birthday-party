@@ -28,10 +28,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             KotlinBirthdayPartyTheme {
                 NavGraph(
-                    mainVM = mainViewModel,
-                    newVM = invitationFormViewModel
+                    mainViewModel = mainViewModel,
+                    invitationViewModel = invitationFormViewModel
                 )
             }
         }
     }
 }
+
+          
