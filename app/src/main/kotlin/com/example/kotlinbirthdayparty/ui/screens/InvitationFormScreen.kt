@@ -1,5 +1,6 @@
 package com.example.kotlinbirthdayparty.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
@@ -9,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -73,10 +75,16 @@ fun InvitationFormScreen(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                 contentColor = MaterialTheme.colorScheme.onSecondaryContainer
             ) {
+                val context = LocalContext.current
+
                 OutlinedButton(
                     onClick = {
                         val result = onConfirm.invoke()
-                        if (result) onBackButtonClicked() },
+                        if (result) {
+                            Toast.makeText(context, "Invite sent!",
+                                Toast.LENGTH_SHORT).show()
+                            onBackButtonClicked()
+                        } },
                     modifier = Modifier
                         .testTag("confirmButton")
                         .padding(horizontal = 30.dp),
