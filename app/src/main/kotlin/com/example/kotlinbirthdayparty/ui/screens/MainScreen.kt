@@ -45,7 +45,6 @@ import kotlinx.coroutines.flow.StateFlow
 fun MainScreen(
     cards: StateFlow<List<Invitation>>,
     onAddInvite: () -> Unit,
-    status: StateFlow<IntArray>,
     onToggle: (Int) -> Unit,
     onDelete: (Int) -> Unit,
 ) {
@@ -54,7 +53,7 @@ fun MainScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                modifier = Modifier.testTag("mainHeader").height(80.dp),
+                modifier = Modifier.testTag("mainHeader").height(100.dp),
                 title = {
                     Row(
                         modifier = Modifier.fillMaxSize(),
@@ -74,7 +73,7 @@ fun MainScreen(
                                 text = "nVITE"
                             )
                         }
-                        StatusCounter(status)
+                        StatusCounter(cards)
                     }
                 },
                 colors = topAppBarColors(
@@ -151,12 +150,9 @@ fun MainScreenPreview() {
         )
     )
 
-    val myStatus = MutableStateFlow(intArrayOf(3,2,1))
-
     KotlinBirthdayPartyTheme{
         MainScreen(
             previewCards,
-            status = myStatus,
             onAddInvite = {},
             onToggle = {},
         ) { }
@@ -167,12 +163,9 @@ fun MainScreenPreview() {
 @Preview(showBackground = true)
 fun MainScreenEmptyPreview() {
 
-    val myStatus = MutableStateFlow(intArrayOf())
-
     KotlinBirthdayPartyTheme {
         MainScreen(
             MutableStateFlow(emptyList()),
-            status = myStatus,
             onAddInvite = {},
             onToggle = {}
         ) { }

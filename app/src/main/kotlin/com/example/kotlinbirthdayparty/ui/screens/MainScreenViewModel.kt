@@ -16,12 +16,8 @@ import kotlinx.coroutines.launch
 class MainScreenViewModel(
     private val repo: InvitationRepository,
 ) : ViewModel {
-    val scope = CoroutineScope(Dispatchers.IO)
-
     val invites: StateFlow<List<Invitation>> = repo.sentInvitations
 
-    private val _status = MutableStateFlow(intArrayOf())
-    val status: StateFlow<IntArray> = _status
 
     fun onDelete(id: Int) {
         repo.remove(id)
@@ -32,24 +28,8 @@ class MainScreenViewModel(
     }
 
     override fun onLoad() {
-        scope.launch {
-            invites.collect { invitations ->
-                _status.update {
-                    Log.d("MainScreenVewModel", "collected new state")
-
-                    calculateStatus(invitations)
-                }
-            }
-        }
     }
 
     override fun onUnload() {
-        scope.cancel()
     }
-
-    fun calculateStatus(invitations: List<Invitation>) = intArrayOf(
-        invitations.count { it.rsvpStatus == RsvpStatus.Pending },
-        invitations.count { it.rsvpStatus == RsvpStatus.Accepted },
-        invitations.count { it.rsvpStatus == RsvpStatus.Declined }
-    )
 }

@@ -14,14 +14,20 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.kotlinbirthdayparty.invitation.Invitation
+import com.example.kotlinbirthdayparty.invitation.RsvpStatus
 import com.example.kotlinbirthdayparty.ui.theme.KotlinBirthdayPartyTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-fun StatusCounter(data: StateFlow<IntArray>) {
+fun StatusCounter(data: StateFlow<List<Invitation>>) {
 
     val myData by data.collectAsState()
+
+    val numPending = myData.count { it.rsvpStatus == RsvpStatus.Pending }
+    val numAccepted = myData.count { it.rsvpStatus == RsvpStatus.Accepted }
+    val numDeclined = myData.count { it.rsvpStatus == RsvpStatus.Declined }
 
     Column(
         modifier = Modifier
@@ -30,21 +36,21 @@ fun StatusCounter(data: StateFlow<IntArray>) {
         horizontalAlignment = Alignment.End,
     ) {
         Text(
-            text = "Pending: ${myData[0]}",
+            text = "Pending: $numPending",
             fontSize = 10.sp,
             lineHeight = 12.sp,
             modifier = Modifier
                 .semantics { contentDescription = "labelPending" }
         )
         Text(
-            text = "Accepted: ${myData[1]}",
+            text = "Accepted: $numAccepted",
             fontSize = 10.sp,
             lineHeight = 12.sp,
             modifier = Modifier
                 .semantics { contentDescription = "labelAccepted" }
         )
         Text(
-            text = "Declined: ${myData[2]}",
+            text = "Declined: $numDeclined",
             fontSize = 10.sp,
             lineHeight = 12.sp,
             modifier = Modifier
@@ -56,9 +62,25 @@ fun StatusCounter(data: StateFlow<IntArray>) {
 @Composable
 @Preview
 fun StatusCounterPreview() {
-    KotlinBirthdayPartyTheme() {
-        StatusCounter(
-            MutableStateFlow(intArrayOf(1,2,3))
+
+    val testInvites = MutableStateFlow(
+        listOf(
+            Invitation(
+                name = "Jake Smith",
+                rsvpStatus = RsvpStatus.Pending
+            ),
+            Invitation(
+                name = "Jose Salinas",
+                rsvpStatus = RsvpStatus.Accepted
+            ),
+            Invitation(
+                name = "Chris Lee",
+                rsvpStatus = RsvpStatus.Accepted
+            )
         )
+    )
+
+    KotlinBirthdayPartyTheme() {
+        StatusCounter(testInvites)
     }
 }

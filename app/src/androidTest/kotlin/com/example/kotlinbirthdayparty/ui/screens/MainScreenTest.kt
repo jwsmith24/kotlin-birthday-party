@@ -45,8 +45,9 @@ class MainScreenTest {
             MainScreen(
                 previewCards,
                 onAddInvite = {},
-                status = MutableStateFlow(intArrayOf(1, 2, 3)),
-                {}) {}
+                onToggle = {},
+                onDelete = {}
+            )
         }
 
         composeTestRule.onNodeWithTag("mainHeader").assertIsDisplayed()
@@ -64,8 +65,9 @@ class MainScreenTest {
             MainScreen(
                 MutableStateFlow(emptyList()),
                 onAddInvite = {},
-                status = MutableStateFlow(intArrayOf(0, 0, 0)),
-                {}) {}
+                onToggle = {},
+                onDelete = {}
+            )
         }
 
         composeTestRule.onNodeWithContentDescription("noCardsIcon").assertIsDisplayed()
@@ -77,8 +79,9 @@ class MainScreenTest {
             MainScreen(
                 previewCards,
                 onAddInvite = {},
-                status = MutableStateFlow(intArrayOf(1, 2, 3)),
-                {}) {}
+                onToggle = {},
+                onDelete = {}
+            )
         }
 
         composeTestRule.onAllNodesWithContentDescription("card")
@@ -94,8 +97,9 @@ class MainScreenTest {
             MainScreen(
                 previewCards,
                 onAddInvite = { plusButtonClicked = true },
-                status = MutableStateFlow(intArrayOf(1, 2, 3)),
-                {}) {}
+                onToggle = {},
+                onDelete = {}
+            )
         }
 
         composeTestRule.onNodeWithTag("addInviteButton").performClick()
