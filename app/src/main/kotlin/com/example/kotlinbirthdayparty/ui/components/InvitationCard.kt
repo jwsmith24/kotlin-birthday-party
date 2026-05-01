@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -65,14 +66,16 @@ fun InvitationCard(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
                 .padding(10.dp),
         ) {
-            Row() {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Icon(
                     Icons.Default.Adb,
                     contentDescription = "droidIcon",
-                    modifier = Modifier.padding(horizontal = 5.dp),
+                    modifier = Modifier.padding(horizontal = 10.dp),
                 )
 
                 Column {

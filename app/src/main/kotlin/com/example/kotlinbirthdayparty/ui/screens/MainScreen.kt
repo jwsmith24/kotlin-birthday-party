@@ -1,9 +1,12 @@
 package com.example.kotlinbirthdayparty.ui.screens
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -32,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import com.example.kotlinbirthdayparty.invitation.Invitation
 import com.example.kotlinbirthdayparty.invitation.RsvpStatus
 import com.example.kotlinbirthdayparty.ui.components.InvitationCard
+import com.example.kotlinbirthdayparty.ui.components.StatusCounter
 import com.example.kotlinbirthdayparty.ui.theme.KotlinBirthdayPartyTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -41,6 +45,7 @@ import kotlinx.coroutines.flow.StateFlow
 fun MainScreen(
     cards: StateFlow<List<Invitation>>,
     onAddInvite: () -> Unit,
+    status: StateFlow<IntArray>,
     onToggle: (Int) -> Unit,
     onDelete: (Int) -> Unit,
 ) {
@@ -49,22 +54,27 @@ fun MainScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                modifier = Modifier.testTag("mainHeader"),
+                modifier = Modifier.testTag("mainHeader").height(80.dp),
                 title = {
                     Row(
-                        verticalAlignment = Alignment.CenterVertically
+                        modifier = Modifier.fillMaxSize(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.AutoAwesome,
-                            contentDescription = "awesomeIcon"
-                        )
-                        Spacer(
-                            modifier = Modifier.width(10.dp)
-                        )
-                        Text(
-                            fontWeight = FontWeight(900),
-                            text = "nVITE"
-                        )
+                        Row() {
+                            Icon(
+                                imageVector = Icons.Default.AutoAwesome,
+                                contentDescription = "awesomeIcon"
+                            )
+                            Spacer(
+                                modifier = Modifier.width(10.dp)
+                            )
+                            Text(
+                                fontWeight = FontWeight(900),
+                                text = "nVITE"
+                            )
+                        }
+                        StatusCounter(status)
                     }
                 },
                 colors = topAppBarColors(
@@ -141,9 +151,12 @@ fun MainScreenPreview() {
         )
     )
 
+    val myStatus = MutableStateFlow(intArrayOf(3,2,1))
+
     KotlinBirthdayPartyTheme{
         MainScreen(
             previewCards,
+            status = myStatus,
             onAddInvite = {},
             onToggle = {},
         ) { }
@@ -153,11 +166,15 @@ fun MainScreenPreview() {
 @Composable
 @Preview(showBackground = true)
 fun MainScreenEmptyPreview() {
+
+    val myStatus = MutableStateFlow(intArrayOf())
+
     KotlinBirthdayPartyTheme {
         MainScreen(
             MutableStateFlow(emptyList()),
-            {},
-            {}
+            status = myStatus,
+            onAddInvite = {},
+            onToggle = {}
         ) { }
     }
 }

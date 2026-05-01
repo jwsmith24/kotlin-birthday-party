@@ -28,7 +28,7 @@ class InvitationRepository {
         )
     )
     val sentInvitations: StateFlow<List<Invitation>> = _sentInvitations
-    private var idCounter = 3
+    private var idCounter = sentInvitations.value.size
 
     fun upsert(invitation: Invitation) {
         _sentInvitations.update { currentList ->

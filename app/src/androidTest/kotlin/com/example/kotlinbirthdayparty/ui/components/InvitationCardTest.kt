@@ -20,7 +20,6 @@ class InvitationCardTest {
     val composeTestRule = createComposeRule()
 
     val testCardData = Invitation(
-        id = 0,
         name = "Jake Smith",
         hasPlusOne = true,
         rsvpStatus = RsvpStatus.Pending

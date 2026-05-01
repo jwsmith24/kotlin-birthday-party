@@ -23,19 +23,16 @@ class MainScreenTest {
 
     val previewCards = MutableStateFlow(listOf(
         Invitation(
-            id = 0,
             name = "Jake Smith",
             hasPlusOne = true,
             rsvpStatus = RsvpStatus.Pending
         ),
         Invitation(
-            id = 1,
             name = "Curt Arbtin",
             hasPlusOne = true,
             rsvpStatus = RsvpStatus.Accepted
         ),
         Invitation(
-            id = 2,
             name = "Rob Payne",
             hasPlusOne = false,
             rsvpStatus = RsvpStatus.Declined
@@ -45,10 +42,16 @@ class MainScreenTest {
     @Test
     fun whenMainScreenLoads_thenShowCorrectComponents() {
         composeTestRule.setContent {
-            MainScreen(previewCards, {}, {}) {}
+            MainScreen(
+                previewCards,
+                onAddInvite = {},
+                status = MutableStateFlow(intArrayOf(1, 2, 3)),
+                {}) {}
         }
 
         composeTestRule.onNodeWithTag("mainHeader").assertIsDisplayed()
+
+        composeTestRule.onNodeWithTag("statusCounter").assertIsDisplayed()
 
         composeTestRule.onNodeWithTag("cardContainer").assertIsDisplayed()
 
@@ -56,18 +59,13 @@ class MainScreenTest {
     }
 
     @Test
-    fun whenMainScreenLoads_thenNewInviteDialogIsHidden() {
-        composeTestRule.setContent {
-            MainScreen(previewCards, {}, {}) {}
-        }
-
-        composeTestRule.onNodeWithText("new invite", ignoreCase = true).assertIsNotDisplayed()
-    }
-
-    @Test
     fun whenInvitesNull_thenShowNoInvitesIndicator() {
         composeTestRule.setContent {
-            MainScreen(MutableStateFlow(emptyList()), {}, {}) {}
+            MainScreen(
+                MutableStateFlow(emptyList()),
+                onAddInvite = {},
+                status = MutableStateFlow(intArrayOf(0, 0, 0)),
+                {}) {}
         }
 
         composeTestRule.onNodeWithContentDescription("noCardsIcon").assertIsDisplayed()
@@ -76,7 +74,11 @@ class MainScreenTest {
     @Test
     fun whenInvitesNotNull_thenShowCorrectNumberOfCards() {
         composeTestRule.setContent {
-            MainScreen(previewCards, {}, {}) {}
+            MainScreen(
+                previewCards,
+                onAddInvite = {},
+                status = MutableStateFlow(intArrayOf(1, 2, 3)),
+                {}) {}
         }
 
         composeTestRule.onAllNodesWithContentDescription("card")
@@ -84,24 +86,20 @@ class MainScreenTest {
     }
 
     @Test
-    fun whenNewInviteButtonClicked_thenNewInviteDialogShouldShow() {
+    fun whenNewInviteButtonClicked_thenCorrectNavCallShouldFire() {
 
         var plusButtonClicked = false
 
         composeTestRule.setContent {
-            MainScreen(previewCards, onAddInvite = {plusButtonClicked = true}, {}) {}
+            MainScreen(
+                previewCards,
+                onAddInvite = { plusButtonClicked = true },
+                status = MutableStateFlow(intArrayOf(1, 2, 3)),
+                {}) {}
         }
 
         composeTestRule.onNodeWithTag("addInviteButton").performClick()
 
         assertTrue(plusButtonClicked)
-    }
-
-    @Test
-    fun whenCardClicked_thenFireCallBackWithCorrectID() {
-
-        composeTestRule.setContent {
-            MainScreen(previewCards, {}, {}) { }
-        }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.kotlinbirthdayparty.ui
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -23,11 +24,11 @@ fun NavGraph(
     navController.addOnDestinationChangedListener { _, destination, _ ->
         when (destination.route) {
             Screen.Main.route -> {
-                // VM lifecycle stuff
+                mainViewModel.onLoad()
             }
 
             Screen.InvitationForm.route -> {
-                // VM lifecycle stuff
+                mainViewModel.onUnload()
             }
         }
     }
@@ -39,6 +40,7 @@ fun NavGraph(
         composable(Screen.Main.route) {
             MainScreen(
                 cards = mainViewModel.invites,
+                status = mainViewModel.status,
                 onToggle = mainViewModel::onToggle,
                 onDelete = mainViewModel::onDelete,
                 onAddInvite = { navController.navigate(Screen.InvitationForm.route) }
