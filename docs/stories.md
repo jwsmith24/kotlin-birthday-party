@@ -91,6 +91,7 @@ And the invalid fields show an error message
 And my invitation is not sent
 ```
 
+
 ## Story #3: Guest Metrics
 
 Type: **feature**
@@ -110,4 +111,14 @@ When I view the top of the invitation list
 Then I can see how many guests were invited
 And I can see how many guests have accepted their invitation
 And I can see how many guests have declined their invitation
+```
+
+#### Bonus objective:
+```gherkin
+Scenario: Delete Invitation
+
+Given I have a valid invitation on the main screen
+When I tap the delete button
+Then I see an invitation disappearing from the list
+And I see a confirmation toast that invite got deleted
 ```

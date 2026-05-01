@@ -27,7 +27,7 @@ class InvitationCardTest {
     )
 
     @Test
-    fun whenCardLoads_thenShowCorrectComponents() {
+    fun whenCardLoads_thenCorrectComponentsShow() {
         composeTestRule.setContent {
             InvitationCard(
                 testCardData,
@@ -36,18 +36,20 @@ class InvitationCardTest {
             )
         }
 
-        composeTestRule.onNodeWithTag("name")
+        composeTestRule.onNodeWithContentDescription("name")
             .assertIsDisplayed()
             .assertTextContains("Jake Smith")
 
-        composeTestRule.onNodeWithTag("plusOne")
+        composeTestRule.onNodeWithContentDescription("plusOne")
             .assertIsDisplayed()
             .assertTextContains("Plus one")
 
-        composeTestRule.onNodeWithTag("rsvpStatus")
+        composeTestRule.onNodeWithContentDescription("rsvpStatus")
             .assertIsDisplayed()
             .assertTextContains("Status: Pending")
-        // Delete button
+
+        composeTestRule.onNodeWithContentDescription("deleteButton")
+            .assertIsDisplayed()
     }
 
     @Test
@@ -65,5 +67,22 @@ class InvitationCardTest {
         composeTestRule.onNodeWithContentDescription("card").performClick()
 
         assertTrue(cardClicked)
+    }
+
+    @Test
+    fun whenUserClicksDelete_thenCorrectCallbackFires() {
+        var deleteClicked = false
+
+        composeTestRule.setContent {
+            InvitationCard(
+                testCardData,
+                onToggle = {},
+                onDelete = { deleteClicked = true }
+            )
+        }
+
+        composeTestRule.onNodeWithContentDescription("deleteButton").performClick()
+
+        assertTrue(deleteClicked)
     }
 }

@@ -1,12 +1,16 @@
 package com.example.kotlinbirthdayparty.ui.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Adb
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
@@ -54,37 +58,55 @@ fun InvitationCard(
                 .fillMaxWidth()
                 .padding(5.dp)
                 .testTag("inviteCard" + cardData.id)
-                .semantics { contentDescription = "card" },
+                .semantics(mergeDescendants = false) { contentDescription = "card" },
         onClick = { onToggle() }
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
         ) {
-            Icon(
-                Icons.Default.Adb,
-                contentDescription = "droidIcon",
-                modifier = Modifier.padding(horizontal = 5.dp),
-            )
-
-            Column {
-                Text(
-                    text = cardData.name,
-                    fontWeight = FontWeight(500),
-                    fontSize = 20.sp,
-                    modifier = Modifier.testTag("name"),
+            Row() {
+                Icon(
+                    Icons.Default.Adb,
+                    contentDescription = "droidIcon",
+                    modifier = Modifier.padding(horizontal = 5.dp),
                 )
-                if (cardData.hasPlusOne) {
+
+                Column {
                     Text(
-                        text = "Plus one",
-                        modifier = Modifier.testTag("plusOne"),
+                        text = cardData.name,
+                        fontWeight = FontWeight(500),
+                        fontSize = 20.sp,
+                        modifier = Modifier
+                            .semantics { contentDescription = "name" },
+                    )
+                    if (cardData.hasPlusOne) {
+                        Text(
+                            text = "Plus one",
+                            modifier = Modifier
+                                .semantics { contentDescription = "plusOne" },
+                        )
+                    }
+
+                    Text(
+                        text = ("Status: " + cardData.rsvpStatus::class.simpleName),
+                        color = myColor,
+                        modifier = Modifier
+                            .semantics { contentDescription = "rsvpStatus" },
                     )
                 }
+            }
 
-                Text(
-                    text = ("Status: " + cardData.rsvpStatus::class.simpleName) ?: "",
-                    color = myColor,
-                    modifier = Modifier.testTag("rsvpStatus"),
+            Button(
+                onClick = onDelete,
+                modifier = Modifier.semantics { contentDescription = "deleteButton" }
+            ) {
+                Icon(
+                    Icons.Default.Delete,
+                    contentDescription = "deleteIcon",
                 )
             }
         }
