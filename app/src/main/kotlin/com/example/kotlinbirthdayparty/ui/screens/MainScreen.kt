@@ -26,6 +26,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -33,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.kotlinbirthdayparty.invitation.Invitation
+import com.example.kotlinbirthdayparty.invitation.InvitationMetrics
 import com.example.kotlinbirthdayparty.invitation.RsvpStatus
 import com.example.kotlinbirthdayparty.ui.components.InvitationCard
 import com.example.kotlinbirthdayparty.ui.components.StatusCounter
@@ -44,11 +46,13 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 fun MainScreen(
     cards: StateFlow<List<Invitation>>,
+    metrics: StateFlow<InvitationMetrics>,
     onAddInvite: () -> Unit,
     onToggle: (Int) -> Unit,
     onDelete: (Int) -> Unit,
 ) {
     val myCards = cards.collectAsState()
+    val invitationMetrics = metrics.collectAsState()
 
     Scaffold(
         topBar = {
@@ -73,7 +77,7 @@ fun MainScreen(
                                 text = "nVITE"
                             )
                         }
-                        StatusCounter(cards)
+                        StatusCounter(invitationMetrics.value)
                     }
                 },
                 colors = topAppBarColors(
@@ -150,9 +154,10 @@ fun MainScreenPreview() {
         )
     )
 
-    KotlinBirthdayPartyTheme{
+    KotlinBirthdayPartyTheme {
         MainScreen(
-            previewCards,
+            cards = previewCards,
+            metrics = MutableStateFlow(InvitationMetrics()),
             onAddInvite = {},
             onToggle = {},
         ) { }
@@ -165,7 +170,8 @@ fun MainScreenEmptyPreview() {
 
     KotlinBirthdayPartyTheme {
         MainScreen(
-            MutableStateFlow(emptyList()),
+            cards = MutableStateFlow(emptyList()),
+            metrics = MutableStateFlow(InvitationMetrics()),
             onAddInvite = {},
             onToggle = {}
         ) { }

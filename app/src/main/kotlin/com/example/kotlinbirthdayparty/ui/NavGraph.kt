@@ -40,6 +40,7 @@ fun NavGraph(
         composable(Screen.Main.route) {
             MainScreen(
                 cards = mainViewModel.invites,
+                metrics = mainViewModel.metrics,
                 onToggle = mainViewModel::onToggle,
                 onDelete = mainViewModel::onDelete,
                 onAddInvite = { navController.navigate(Screen.InvitationForm.route) }

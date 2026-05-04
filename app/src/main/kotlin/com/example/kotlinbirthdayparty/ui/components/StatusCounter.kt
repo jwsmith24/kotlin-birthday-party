@@ -1,5 +1,6 @@
 package com.example.kotlinbirthdayparty.ui.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -15,44 +16,51 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kotlinbirthdayparty.invitation.Invitation
+import com.example.kotlinbirthdayparty.invitation.InvitationMetrics
 import com.example.kotlinbirthdayparty.invitation.RsvpStatus
 import com.example.kotlinbirthdayparty.ui.theme.KotlinBirthdayPartyTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
+private val fontSize = 10.sp
+private val lineHeight = 12.sp
+
 @Composable
-fun StatusCounter(data: StateFlow<List<Invitation>>) {
+fun StatusCounter(metrics: InvitationMetrics) {
 
-    val myData by data.collectAsState()
-
-    val numPending = myData.count { it.rsvpStatus == RsvpStatus.Pending }
-    val numAccepted = myData.count { it.rsvpStatus == RsvpStatus.Accepted }
-    val numDeclined = myData.count { it.rsvpStatus == RsvpStatus.Declined }
 
     Column(
         modifier = Modifier
             .testTag("statusCounter")
             .padding(horizontal = 10.dp),
         horizontalAlignment = Alignment.End,
+        verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Text(
-            text = "Pending: $numPending",
-            fontSize = 10.sp,
-            lineHeight = 12.sp,
+            text = "Total: ${metrics.total}",
+            fontSize = fontSize,
+            lineHeight = lineHeight,
+            modifier = Modifier
+                .semantics { contentDescription = "labelTotal" }
+        )
+        Text(
+            text = "Pending: ${metrics.pending}",
+            fontSize = fontSize,
+            lineHeight = lineHeight,
             modifier = Modifier
                 .semantics { contentDescription = "labelPending" }
         )
         Text(
-            text = "Accepted: $numAccepted",
-            fontSize = 10.sp,
-            lineHeight = 12.sp,
+            text = "Accepted: ${metrics.accepted}",
+            fontSize = fontSize,
+            lineHeight = lineHeight,
             modifier = Modifier
                 .semantics { contentDescription = "labelAccepted" }
         )
         Text(
-            text = "Declined: $numDeclined",
-            fontSize = 10.sp,
-            lineHeight = 12.sp,
+            text = "Declined: ${metrics.declined}",
+            fontSize = fontSize,
+            lineHeight = lineHeight,
             modifier = Modifier
                 .semantics { contentDescription = "labelDeclined" }
         )
@@ -63,24 +71,14 @@ fun StatusCounter(data: StateFlow<List<Invitation>>) {
 @Preview
 fun StatusCounterPreview() {
 
-    val testInvites = MutableStateFlow(
-        listOf(
-            Invitation(
-                name = "Jake Smith",
-                rsvpStatus = RsvpStatus.Pending
-            ),
-            Invitation(
-                name = "Jose Salinas",
-                rsvpStatus = RsvpStatus.Accepted
-            ),
-            Invitation(
-                name = "Chris Lee",
-                rsvpStatus = RsvpStatus.Accepted
-            )
-        )
+    val testMetrics = InvitationMetrics(
+        total = 5,
+        accepted = 3,
+        declined = 1,
+        pending = 1
     )
 
     KotlinBirthdayPartyTheme() {
-        StatusCounter(testInvites)
+        StatusCounter(testMetrics)
     }
 }
