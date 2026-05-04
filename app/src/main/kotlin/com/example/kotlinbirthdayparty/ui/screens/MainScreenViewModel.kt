@@ -1,6 +1,5 @@
 package com.example.kotlinbirthdayparty.ui.screens
 
-import android.util.Log
 import com.example.kotlinbirthdayparty.invitation.Invitation
 import com.example.kotlinbirthdayparty.invitation.InvitationMetrics
 import com.example.kotlinbirthdayparty.invitation.InvitationRepository
@@ -9,14 +8,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.WhileSubscribed
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
 class MainScreenViewModel(
     private val repo: InvitationRepository,
@@ -24,10 +19,7 @@ class MainScreenViewModel(
     private var viewModelScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     val invites: StateFlow<List<Invitation>> = repo.sentInvitations
 
-
-
-
-    val metrics = repo.sentInvitations
+    val metrics: StateFlow<InvitationMetrics> = repo.sentInvitations
     // map transforms the data coming in from the repo into the shape we want for the UI
         .map { invites ->
             InvitationMetrics(

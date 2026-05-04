@@ -1,9 +1,11 @@
 package com.example.kotlinbirthdayparty.invitation
 
-sealed class RsvpStatus {
-    object Pending : RsvpStatus()
+import androidx.compose.ui.graphics.Color
 
-    object Accepted: RsvpStatus()
+sealed class RsvpStatus(val color: Color) {
+     object Pending : RsvpStatus(color = Color.Yellow)
 
-    object Declined: RsvpStatus()
+     object Accepted: RsvpStatus(color = Color.Green)
+
+     object Declined: RsvpStatus(color = Color.Red)
 }

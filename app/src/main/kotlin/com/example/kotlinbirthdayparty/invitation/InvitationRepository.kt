@@ -2,6 +2,7 @@ package com.example.kotlinbirthdayparty.invitation
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 class InvitationRepository {
@@ -27,7 +28,7 @@ class InvitationRepository {
             )
         )
     )
-    val sentInvitations: StateFlow<List<Invitation>> = _sentInvitations
+    val sentInvitations: StateFlow<List<Invitation>> = _sentInvitations.asStateFlow()
     private var idCounter = sentInvitations.value.size
 
     fun upsert(invitation: Invitation) {
