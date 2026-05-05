@@ -33,8 +33,6 @@ Navigation
 
 ![img.png](img/androidPlugins.png)
 
-- todo: emulator setup
+- Setup emulator
 
-...
-
-- Open the [user stories](./docs/stories.md) file and get started.
+- Open the [user stories](./docs/stories.md) file
