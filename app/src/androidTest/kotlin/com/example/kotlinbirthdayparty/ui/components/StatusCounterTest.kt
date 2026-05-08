@@ -4,8 +4,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
-import com.example.kotlinbirthdayparty.invitation.Invitation
-import com.example.kotlinbirthdayparty.invitation.RsvpStatus
+import com.example.kotlinbirthdayparty.TestHelper
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Rule
 import org.junit.Test
@@ -15,28 +14,7 @@ class StatusCounterTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    val testCounterData = MutableStateFlow(
-        listOf(
-            Invitation(
-                id = 0,
-                name = "Jacob Varner",
-                hasPlusOne = true,
-                rsvpStatus = RsvpStatus.Pending
-            ),
-            Invitation(
-                id = 1,
-                name = "Curt Arbtin",
-                hasPlusOne = true,
-                rsvpStatus = RsvpStatus.Pending
-            ),
-            Invitation(
-                id = 2,
-                name = "Rob Payne",
-                hasPlusOne = false,
-                rsvpStatus = RsvpStatus.Declined
-            )
-        )
-    )
+    val testCounterData = MutableStateFlow(TestHelper.invitations)
 
 
     @Test
@@ -62,10 +40,10 @@ class StatusCounterTest {
         }
 
         composeTestRule.onNodeWithContentDescription("labelPending")
-            .assertTextContains("2", substring = true)
+            .assertTextContains("1", substring = true)
 
         composeTestRule.onNodeWithContentDescription("labelAccepted")
-            .assertTextContains("0", substring = true)
+            .assertTextContains("1", substring = true)
 
         composeTestRule.onNodeWithContentDescription("labelDeclined")
             .assertTextContains("1", substring = true)

@@ -14,6 +14,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.kotlinbirthdayparty.TestHelper
 import com.example.kotlinbirthdayparty.invitation.Invitation
 import com.example.kotlinbirthdayparty.invitation.RsvpStatus
 import com.example.kotlinbirthdayparty.ui.theme.KotlinBirthdayPartyTheme
@@ -63,22 +64,7 @@ fun StatusCounter(data: StateFlow<List<Invitation>>) {
 @Preview
 fun StatusCounterPreview() {
 
-    val testInvites = MutableStateFlow(
-        listOf(
-            Invitation(
-                name = "Jake Smith",
-                rsvpStatus = RsvpStatus.Pending
-            ),
-            Invitation(
-                name = "Jose Salinas",
-                rsvpStatus = RsvpStatus.Accepted
-            ),
-            Invitation(
-                name = "Chris Lee",
-                rsvpStatus = RsvpStatus.Accepted
-            )
-        )
-    )
+    val testInvites = MutableStateFlow(TestHelper.invitations)
 
     KotlinBirthdayPartyTheme() {
         StatusCounter(testInvites)

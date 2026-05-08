@@ -2,13 +2,12 @@ package com.example.kotlinbirthdayparty.ui.screens
 
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import com.example.kotlinbirthdayparty.TestHelper
 import com.example.kotlinbirthdayparty.invitation.Invitation
 import com.example.kotlinbirthdayparty.invitation.RsvpStatus
 import junit.framework.TestCase.assertTrue
@@ -21,23 +20,7 @@ class MainScreenTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    val previewCards = MutableStateFlow(listOf(
-        Invitation(
-            name = "Jake Smith",
-            hasPlusOne = true,
-            rsvpStatus = RsvpStatus.Pending
-        ),
-        Invitation(
-            name = "Curt Arbtin",
-            hasPlusOne = true,
-            rsvpStatus = RsvpStatus.Accepted
-        ),
-        Invitation(
-            name = "Rob Payne",
-            hasPlusOne = false,
-            rsvpStatus = RsvpStatus.Declined
-        )
-    ))
+    val previewCards = MutableStateFlow(TestHelper.invitations)
 
     @Test
     fun whenMainScreenLoads_thenShowCorrectComponents() {

@@ -1,32 +1,12 @@
 package com.example.kotlinbirthdayparty.invitation
 
+import com.example.kotlinbirthdayparty.TestHelper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
 class InvitationRepository {
-    private val _sentInvitations = MutableStateFlow(
-        listOf(
-            Invitation(
-                id = 0,
-                name = "Jacob Varner",
-                hasPlusOne = true,
-                rsvpStatus = RsvpStatus.Pending
-            ),
-            Invitation(
-                id = 1,
-                name = "Curt Arbtin",
-                hasPlusOne = true,
-                rsvpStatus = RsvpStatus.Accepted
-            ),
-            Invitation(
-                id = 2,
-                name = "Rob Payne",
-                hasPlusOne = false,
-                rsvpStatus = RsvpStatus.Declined
-            )
-        )
-    )
+    private val _sentInvitations = MutableStateFlow(TestHelper.invitations)
     val sentInvitations: StateFlow<List<Invitation>> = _sentInvitations
     private var idCounter = sentInvitations.value.size
 

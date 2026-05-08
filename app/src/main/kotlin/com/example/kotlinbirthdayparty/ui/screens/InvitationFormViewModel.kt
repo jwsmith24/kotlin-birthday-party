@@ -1,7 +1,5 @@
 package com.example.kotlinbirthdayparty.ui.screens
 
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
 import com.example.kotlinbirthdayparty.invitation.Invitation
 import com.example.kotlinbirthdayparty.invitation.InvitationRepository
 import com.example.kotlinbirthdayparty.invitation.RsvpStatus
@@ -17,6 +15,7 @@ class InvitationFormViewModel(
         Invitation(
             name = "",
             hasPlusOne = false,
+            address = "",
             rsvpStatus = RsvpStatus.Pending
         )
     )
@@ -24,11 +23,17 @@ class InvitationFormViewModel(
     val invitation: StateFlow<Invitation> = _invitationFormData
 
     private val _nameHasErrors = MutableStateFlow(false)
-
     val nameHasErrors: StateFlow<Boolean> = _nameHasErrors
+
+    private val _addressHasErrors = MutableStateFlow(false)
+    val addressHasErrors: StateFlow<Boolean> = _addressHasErrors
 
     fun handleNameFieldChange(name: String) {
         _invitationFormData.update { it.copy(name = name) }
+    }
+
+    fun handleAddressFieldChange(address: String) {
+        _invitationFormData.update { it.copy(address = address) }
     }
 
     fun handlePlusOneChange(hasPlusOne: Boolean) {
@@ -36,12 +41,17 @@ class InvitationFormViewModel(
     }
 
     fun onSubmit(): Boolean {
-        if (_invitationFormData.value.name.isNotBlank()) {
+
+        val nameIsValid = _invitationFormData.value.name.isNotBlank()
+        val addressIsValid = _invitationFormData.value.address.isNotBlank()
+
+        if (nameIsValid && addressIsValid) {
             repo.upsert(invitation.value)
 
             return true
         } else {
-            _nameHasErrors.update { true }
+            _nameHasErrors.update { !nameIsValid }
+            _addressHasErrors.update { !addressIsValid }
             return false
         }
     }

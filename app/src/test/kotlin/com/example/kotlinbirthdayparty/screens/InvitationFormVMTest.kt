@@ -24,23 +24,29 @@ class InvitationFormVMTest() {
     fun whenSubmittingBlankName_thenShouldReturnFalseOnSubmit() {
 
         assertFalse(testVM.onSubmit())
+
+        testVM.handleNameFieldChange("changing name, address still blank")
+
+        assertFalse(testVM.onSubmit())
     }
 
     @Test
-    fun whenSubmittingGoodName_thenShouldReturnCallRepoWithRightData() {
+    fun whenSubmittingGoodNameAndAddress_thenShouldReturnCallRepoWithRightData() {
         val inviteSlot = slot<Invitation>()
 
         every { mockRepo.upsert(
             capture(inviteSlot)
         ) } just(Runs)
 
-        testVM.handleNameFieldChange("Hello World!")
+        testVM.handleNameFieldChange("Hello")
+        testVM.handleAddressFieldChange("World!")
         testVM.handlePlusOneChange(true)
 
 
         val submittedInvite = Invitation(
-            name = "Hello World!",
-            hasPlusOne = true
+            name = "Hello",
+            address = "World!",
+            hasPlusOne = true,
         )
 
         assertTrue(testVM.onSubmit())

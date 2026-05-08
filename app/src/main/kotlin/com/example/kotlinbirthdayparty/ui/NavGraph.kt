@@ -1,16 +1,16 @@
 package com.example.kotlinbirthdayparty.ui
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.kotlinbirthdayparty.ui.screens.InvitationFormScreen
+import com.example.kotlinbirthdayparty.ui.screens.InvitationFormState
+import com.example.kotlinbirthdayparty.ui.screens.InvitationFormViewModel
 import com.example.kotlinbirthdayparty.ui.screens.MainScreen
 import com.example.kotlinbirthdayparty.ui.screens.MainScreenViewModel
-import com.example.kotlinbirthdayparty.ui.screens.InvitationFormScreen
-import com.example.kotlinbirthdayparty.ui.screens.InvitationFormViewModel
 
 @Composable
 fun NavGraph(
@@ -49,15 +49,20 @@ fun NavGraph(
         composable(Screen.InvitationForm.route) {
             val invitation by invitationViewModel.invitation.collectAsState()
 
-            InvitationFormScreen(
+            val formState = InvitationFormState(
                 name = invitation.name,
+                address = invitation.address,
                 hasPlusOne = invitation.hasPlusOne,
                 onConfirm = { invitationViewModel.onSubmit() },
                 nameHasErrors = invitationViewModel.nameHasErrors,
+                addressHasErrors = invitationViewModel.addressHasErrors,
                 onBackButtonClicked = { navController.popBackStack() },
                 onNameFieldChanged = invitationViewModel::handleNameFieldChange,
+                onAddressFieldChanged = invitationViewModel::handleAddressFieldChange,
                 onPlusOneChanged = invitationViewModel::handlePlusOneChange
             )
+
+            InvitationFormScreen(formState)
         }
     }
 }

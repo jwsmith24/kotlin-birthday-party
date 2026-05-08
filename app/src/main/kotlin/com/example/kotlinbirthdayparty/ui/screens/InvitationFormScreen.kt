@@ -20,19 +20,24 @@ import com.example.kotlinbirthdayparty.ui.theme.KotlinBirthdayPartyTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
+data class InvitationFormState(
+    val name: String,
+    val address: String,
+    val hasPlusOne: Boolean,
+    val onNameFieldChanged: (String) -> Unit,
+    val onAddressFieldChanged: (String) -> Unit,
+    val onPlusOneChanged: (Boolean) -> Unit,
+    val nameHasErrors: StateFlow<Boolean>,
+    val addressHasErrors: StateFlow<Boolean>,
+    val onConfirm: () -> Boolean,
+    val onBackButtonClicked: () -> Unit
+)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun InvitationFormScreen(
-    name: String,
-    hasPlusOne: Boolean,
-    onNameFieldChanged: (String) -> Unit,
-    onPlusOneChanged: (Boolean) -> Unit,
-    nameHasErrors: StateFlow<Boolean>,
-    onConfirm: () -> Boolean,
-    onBackButtonClicked: () -> Unit
-) {
-    val error = nameHasErrors.collectAsState()
+fun InvitationFormScreen(state: InvitationFormState) {
+    val errorName = state.nameHasErrors.collectAsState()
+    val errorAddress = state.addressHasErrors.collectAsState()
 
     Scaffold(
         topBar = {
@@ -47,7 +52,7 @@ fun InvitationFormScreen(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         ElevatedButton(
-                            onClick = onBackButtonClicked,
+                            onClick = state.onBackButtonClicked,
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = MaterialTheme.colorScheme.inversePrimary,
                                 contentColor = MaterialTheme.colorScheme.onSurface
@@ -79,12 +84,15 @@ fun InvitationFormScreen(
 
                 OutlinedButton(
                     onClick = {
-                        val result = onConfirm.invoke()
+                        val result = state.onConfirm.invoke()
                         if (result) {
-                            Toast.makeText(context, "Invite sent!",
-                                Toast.LENGTH_SHORT).show()
-                            onBackButtonClicked()
-                        } },
+                            Toast.makeText(
+                                context, "Invite sent!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            state.onBackButtonClicked()
+                        }
+                    },
                     modifier = Modifier
                         .testTag("confirmButton")
                         .padding(horizontal = 30.dp),
@@ -103,12 +111,12 @@ fun InvitationFormScreen(
             modifier = Modifier.padding(innerPadding)
         ) {
             OutlinedTextField(
-                value = name,
+                value = state.name,
                 label = { Text(text = "name") },
-                isError = error.value,
-                onValueChange = onNameFieldChanged,
+                isError = errorName.value,
+                onValueChange = state.onNameFieldChanged,
                 supportingText = {
-                    if (error.value) {
+                    if (errorName.value) {
                         Text("Please fill out name correctly")
                     }
                 },
@@ -118,12 +126,28 @@ fun InvitationFormScreen(
                     .testTag("inputName"),
             )
 
+            OutlinedTextField(
+                value = state.address,
+                label = { Text(text = "address") },
+                isError = errorAddress.value,
+                onValueChange = state.onAddressFieldChanged,
+                supportingText = {
+                    if (errorAddress.value) {
+                        Text("Please fill out address correctly")
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
+                    .testTag("inputAddress"),
+            )
+
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Checkbox(
-                    checked = hasPlusOne,
-                    onCheckedChange = onPlusOneChanged,
+                    checked = state.hasPlusOne,
+                    onCheckedChange = state.onPlusOneChanged,
                     modifier = Modifier.testTag("checkboxPlusOne")
                 )
                 Text("Bringing plus one")
@@ -137,13 +161,18 @@ fun InvitationFormScreen(
 fun NewInviteScreenPreview() {
     KotlinBirthdayPartyTheme {
         InvitationFormScreen(
-            name = "bob",
-            hasPlusOne = true,
-            onNameFieldChanged = { },
-            onPlusOneChanged = { },
-            nameHasErrors = MutableStateFlow(true),
-            onConfirm = { false },
-            onBackButtonClicked = {}
+            InvitationFormState(
+                name = "bob",
+                address = "123 Main st.",
+                hasPlusOne = true,
+                onNameFieldChanged = { },
+                onAddressFieldChanged = { },
+                onPlusOneChanged = { },
+                nameHasErrors = MutableStateFlow(true),
+                addressHasErrors = MutableStateFlow(true),
+                onConfirm = { false },
+                onBackButtonClicked = {},
+            )
         )
     }
 }

@@ -16,28 +16,30 @@ class InvitationFormScreenTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
+    var state = InvitationFormState(
+        name = "",
+        address = "",
+        hasPlusOne = false,
+        onNameFieldChanged = { },
+        onAddressFieldChanged = { },
+        onPlusOneChanged = { },
+        nameHasErrors = MutableStateFlow(true),
+        addressHasErrors = MutableStateFlow(true),
+        onConfirm = { false },
+        onBackButtonClicked = {}
+    )
+
     @Test
     fun whenFormScreenLoads_thenDisplayCorrectFields() {
         composeTestRule.setContent {
-            InvitationFormScreen(
-                name = "",
-                hasPlusOne = false,
-                onNameFieldChanged = { },
-                onPlusOneChanged = { },
-                nameHasErrors = MutableStateFlow(true),
-                onConfirm = { true },
-                onBackButtonClicked = {}
-            )
+            InvitationFormScreen(state)
         }
 
         composeTestRule.onNodeWithTag("formHeader").assertIsDisplayed()
-
         composeTestRule.onNodeWithTag("backButton").assertIsDisplayed()
-
         composeTestRule.onNodeWithTag("inputName").assertIsDisplayed()
-
+        composeTestRule.onNodeWithTag("inputAddress").assertIsDisplayed()
         composeTestRule.onNodeWithTag("checkboxPlusOne").assertIsDisplayed()
-
         composeTestRule.onNodeWithTag("confirmButton").assertIsDisplayed()
     }
 
@@ -46,17 +48,9 @@ class InvitationFormScreenTest {
 
         var backButtonClicked = false
 
-        composeTestRule.setContent {
-            InvitationFormScreen(
-                name = "",
-                hasPlusOne = false,
-                onNameFieldChanged = { },
-                onPlusOneChanged = { },
-                nameHasErrors = MutableStateFlow(true),
-                onConfirm = { true },
-                onBackButtonClicked = { backButtonClicked = true }
-            )
-        }
+        state = state.copy(onBackButtonClicked = { backButtonClicked = true })
+
+        composeTestRule.setContent { InvitationFormScreen(state) }
 
         composeTestRule.onNodeWithTag("backButton").performClick()
 
@@ -64,22 +58,13 @@ class InvitationFormScreenTest {
     }
 
     @Test
-    fun whenConfirmButtonClickedWithProperlyFilledInName_thenCallCorrectCallback() {
+    fun whenConfirmButtonClicked_thenCallCorrectCallback() {
 
         var confirmClicked = false
 
-        composeTestRule.setContent {
-            InvitationFormScreen(
-                name = "",
-                hasPlusOne = false,
-                onNameFieldChanged = { },
-                onPlusOneChanged = { },
-                nameHasErrors = MutableStateFlow(true),
-                onConfirm = { confirmClicked = true
-                            true },
-                onBackButtonClicked = { }
-            )
-        }
+        state = state.copy(onConfirm = { confirmClicked = true; true })
+
+        composeTestRule.setContent { InvitationFormScreen(state) }
 
         composeTestRule.onNodeWithTag("confirmButton").performClick()
 
@@ -91,17 +76,23 @@ class InvitationFormScreenTest {
 
         var navBack = false
 
-        composeTestRule.setContent {
-            InvitationFormScreen(
-                name = "",
-                hasPlusOne = false,
-                onNameFieldChanged = { },
-                onPlusOneChanged = { },
-                nameHasErrors = MutableStateFlow(true),
-                onConfirm = { false },
-                onBackButtonClicked = { navBack = true }
-            )
-        }
+        state = state.copy(onBackButtonClicked = { navBack = true })
+
+        composeTestRule.setContent { InvitationFormScreen(state) }
+
+        composeTestRule.onNodeWithTag("confirmButton").performClick()
+
+        assertFalse(navBack)
+    }
+
+    @Test
+    fun whenConfirmButtonClickedWithoutFilledInAddress_thenDontNavBack() {
+
+        var navBack = false
+
+        state = state.copy(onBackButtonClicked = { navBack = true })
+
+        composeTestRule.setContent { InvitationFormScreen(state) }
 
         composeTestRule.onNodeWithTag("confirmButton").performClick()
 
@@ -111,25 +102,24 @@ class InvitationFormScreenTest {
     @Test
     fun whenFormIsFilled_thenFireCorrectCallbacks() {
 
-        var typedText = false
+        var typedName = false
+        var typedAddress = false
         var checkedBox = false
 
-        composeTestRule.setContent {
-            InvitationFormScreen(
-                name = "",
-                hasPlusOne = false,
-                onNameFieldChanged = { typedText = true },
-                onPlusOneChanged = { checkedBox = true },
-                nameHasErrors = MutableStateFlow(false),
-                onConfirm = { false },
-                onBackButtonClicked = { }
-            )
-        }
+        state = state.copy(
+            onNameFieldChanged = { typedName = true },
+            onAddressFieldChanged = { typedAddress = true },
+            onPlusOneChanged = { checkedBox = true}
+        )
+
+        composeTestRule.setContent { InvitationFormScreen(state) }
 
         composeTestRule.onNodeWithTag("inputName").performTextInput("hello")
+        composeTestRule.onNodeWithTag("inputAddress").performTextInput("world")
         composeTestRule.onNodeWithTag("checkboxPlusOne").performClick()
 
-        assertTrue(typedText)
+        assertTrue(typedName)
+        assertTrue(typedAddress)
         assertTrue(checkedBox)
     }
 }

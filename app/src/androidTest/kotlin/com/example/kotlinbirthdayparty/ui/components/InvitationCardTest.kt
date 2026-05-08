@@ -4,13 +4,9 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
-import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.example.kotlinbirthdayparty.invitation.Invitation
-import com.example.kotlinbirthdayparty.invitation.RsvpStatus
 import junit.framework.TestCase.assertTrue
-import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Rule
 import org.junit.Test
 
@@ -21,8 +17,8 @@ class InvitationCardTest {
 
     val testCardData = Invitation(
         name = "Jake Smith",
+        address = "123 Main st.",
         hasPlusOne = true,
-        rsvpStatus = RsvpStatus.Pending
     )
 
     @Test
@@ -37,11 +33,11 @@ class InvitationCardTest {
 
         composeTestRule.onNodeWithContentDescription("name")
             .assertIsDisplayed()
-            .assertTextContains("Jake Smith")
+            .assertTextContains("Jake Smith +1")
 
-        composeTestRule.onNodeWithContentDescription("plusOne")
+        composeTestRule.onNodeWithContentDescription("address")
             .assertIsDisplayed()
-            .assertTextContains("Plus one")
+            .assertTextContains("123 Main st.")
 
         composeTestRule.onNodeWithContentDescription("rsvpStatus")
             .assertIsDisplayed()

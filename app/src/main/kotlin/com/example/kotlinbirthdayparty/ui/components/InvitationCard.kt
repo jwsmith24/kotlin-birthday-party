@@ -3,7 +3,6 @@ package com.example.kotlinbirthdayparty.ui.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.kotlinbirthdayparty.TestHelper
 import com.example.kotlinbirthdayparty.invitation.Invitation
 import com.example.kotlinbirthdayparty.invitation.RsvpStatus
 
@@ -80,19 +80,19 @@ fun InvitationCard(
 
                 Column {
                     Text(
-                        text = cardData.name,
+                        text = if (cardData.hasPlusOne) cardData.name + " +1" else cardData.name,
                         fontWeight = FontWeight(500),
                         fontSize = 20.sp,
                         modifier = Modifier
                             .semantics { contentDescription = "name" },
                     )
-                    if (cardData.hasPlusOne) {
-                        Text(
-                            text = "Plus one",
-                            modifier = Modifier
-                                .semantics { contentDescription = "plusOne" },
-                        )
-                    }
+
+                    Text(
+                        text = cardData.address,
+                        color = MaterialTheme.colorScheme.onTertiaryContainer,
+                        modifier = Modifier
+                            .semantics { contentDescription = "address" }
+                    )
 
                     Text(
                         text = ("Status: " + cardData.rsvpStatus::class.simpleName),
@@ -122,31 +122,10 @@ fun InvitationCardPendingPreview() {
     Column(
         modifier = Modifier.padding(10.dp),
     ) {
-        InvitationCard(
-            Invitation(
-                0,
-                name = "Jacob Varner",
-                hasPlusOne = true,
-                rsvpStatus = RsvpStatus.Pending,
-            ), {}
-        ) { }
+        InvitationCard(TestHelper.invitations[0], {}) { }
 
-        InvitationCard(
-            Invitation(
-                0,
-                name = "Curt Arbtin",
-                hasPlusOne = true,
-                rsvpStatus = RsvpStatus.Accepted,
-            ), {}
-        ) { }
+        InvitationCard(TestHelper.invitations[1], {}) { }
 
-        InvitationCard(
-            Invitation(
-                0,
-                name = "Rob Payne",
-                hasPlusOne = false,
-                rsvpStatus = RsvpStatus.Declined,
-            ), {}
-        ) { }
+        InvitationCard(TestHelper.invitations[2], {}) { }
     }
 }

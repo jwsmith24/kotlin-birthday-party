@@ -12,7 +12,7 @@ class InvitationRepositoryTest {
     @Before
     fun setup() {
         invitationRepo = InvitationRepository()
-        testInvitation = Invitation(name = "Yasmeen")
+        testInvitation = Invitation(id = 10, name = "Yasmeen", address = "123 Main st.")
     }
 
     @Test
