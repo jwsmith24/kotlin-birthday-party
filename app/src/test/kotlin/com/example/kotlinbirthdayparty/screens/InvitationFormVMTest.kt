@@ -44,9 +44,11 @@ class InvitationFormVMTest() {
 
 
         val submittedInvite = Invitation(
+            id = 5,
             name = "Hello",
             address = "World!",
             hasPlusOne = true,
+            time = "11:00",
         )
 
         assertTrue(testVM.onSubmit())
@@ -55,4 +57,6 @@ class InvitationFormVMTest() {
 
         assertEquals(submittedInvite, inviteSlot.captured)
     }
+
+
 }

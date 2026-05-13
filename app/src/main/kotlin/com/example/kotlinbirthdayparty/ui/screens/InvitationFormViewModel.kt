@@ -16,6 +16,7 @@ class InvitationFormViewModel(
             name = "",
             hasPlusOne = false,
             address = "",
+            time = "0:00",
             rsvpStatus = RsvpStatus.Pending
         )
     )

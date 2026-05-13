@@ -1,10 +1,29 @@
 package com.example.kotlinbirthdayparty.ui.screens
 
 import android.widget.Toast
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
-import androidx.compose.material3.*
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TimePicker
+import androidx.compose.material3.TimePickerState
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -20,7 +39,7 @@ import com.example.kotlinbirthdayparty.ui.theme.KotlinBirthdayPartyTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-data class InvitationFormState(
+data class InvitationFormState @OptIn(ExperimentalMaterial3Api::class) constructor(
     val name: String,
     val address: String,
     val hasPlusOne: Boolean,
@@ -29,6 +48,7 @@ data class InvitationFormState(
     val onPlusOneChanged: (Boolean) -> Unit,
     val nameHasErrors: StateFlow<Boolean>,
     val addressHasErrors: StateFlow<Boolean>,
+    val timePickerState: TimePickerState,
     val onConfirm: () -> Boolean,
     val onBackButtonClicked: () -> Unit
 )
@@ -41,6 +61,7 @@ fun InvitationFormScreen(state: InvitationFormState) {
 
     Scaffold(
         topBar = {
+
             TopAppBar(
                 modifier = Modifier.testTag("formHeader"),
                 colors = topAppBarColors(
@@ -152,10 +173,22 @@ fun InvitationFormScreen(state: InvitationFormState) {
                 )
                 Text("Bringing plus one")
             }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                TimePicker(
+                    state = state.timePickerState,
+                    modifier = Modifier
+                        .testTag("timePicker")
+                )
+            }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview(showBackground = true)
 fun NewInviteScreenPreview() {
@@ -170,6 +203,7 @@ fun NewInviteScreenPreview() {
                 onPlusOneChanged = { },
                 nameHasErrors = MutableStateFlow(true),
                 addressHasErrors = MutableStateFlow(true),
+                timePickerState = TimePickerState(13, 24, true),
                 onConfirm = { false },
                 onBackButtonClicked = {},
             )

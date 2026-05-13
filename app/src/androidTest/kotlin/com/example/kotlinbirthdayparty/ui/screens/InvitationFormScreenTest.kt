@@ -1,5 +1,7 @@
 package com.example.kotlinbirthdayparty.ui.screens
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TimePickerState
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
@@ -11,6 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Rule
 import org.junit.Test
 
+@OptIn(ExperimentalMaterial3Api::class)
 class InvitationFormScreenTest {
 
     @get:Rule
@@ -25,6 +28,7 @@ class InvitationFormScreenTest {
         onPlusOneChanged = { },
         nameHasErrors = MutableStateFlow(true),
         addressHasErrors = MutableStateFlow(true),
+        timePickerState = TimePickerState(22, 15, true),
         onConfirm = { false },
         onBackButtonClicked = {}
     )
@@ -40,6 +44,7 @@ class InvitationFormScreenTest {
         composeTestRule.onNodeWithTag("inputName").assertIsDisplayed()
         composeTestRule.onNodeWithTag("inputAddress").assertIsDisplayed()
         composeTestRule.onNodeWithTag("checkboxPlusOne").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("timePicker").assertIsDisplayed()
         composeTestRule.onNodeWithTag("confirmButton").assertIsDisplayed()
     }
 
@@ -70,6 +75,7 @@ class InvitationFormScreenTest {
 
         assertTrue(confirmClicked)
     }
+
 
     @Test
     fun whenConfirmButtonClickedWithoutFilledInName_thenDontNavBack() {
